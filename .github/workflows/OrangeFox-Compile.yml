@@ -5,7 +5,9 @@ name: OrangeFox - 构建
 # https://gitlab.com/OrangeFox
 # https://github.com/azwhikaru for Recovery Builder Template
 # And all Contributors in every repositories I used
+# 调教说明
 # Lime优化与编辑修复
+# 在原有基础上添加对OF14.1的支持
 
 on:
   workflow_dispatch:
@@ -16,8 +18,10 @@ on:
         default: '12.1'
         type: choice
         options:
+        - 14.1
         - 12.1
         - 11.0
+        - 10.0
       DEVICE_TREE:
         description: 'OrangeFox设备树'
         required: true
@@ -70,7 +74,7 @@ jobs:
         sudo bash setup/android_build_env.sh
       
     - name: 🏙️ 初始化清单
-      if: inputs.MANIFEST_BRANCH == '11.0' || inputs.MANIFEST_BRANCH == '12.1'
+      if: inputs.MANIFEST_BRANCH == '11.0' || inputs.MANIFEST_BRANCH == '12.1' || inputs.MANIFEST_BRANCH == '14.1'
       run: |
         mkdir -p ${GITHUB_WORKSPACE}/OrangeFox
         cd ${GITHUB_WORKSPACE}/OrangeFox
