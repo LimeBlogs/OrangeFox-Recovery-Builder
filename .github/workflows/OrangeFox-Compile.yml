@@ -143,9 +143,9 @@ jobs:
             <img src="https://orangefox.download/fox.svg" height="40" style="vertical-align:bottom"/> 
             OrangeFox ${{ inputs.MANIFEST_BRANCH }}
           </h1>
-          🚀构建: ${{ github.run_id }}<br>
-          📱设备: ${{ inputs.DEVICE_NAME }}<br>
-          🦊OrangeFox版本: ${{ inputs.MANIFEST_BRANCH }}<br>
+          🚀 构建: ${{ github.run_id }}<br>
+          📱 设备: ${{ inputs.DEVICE_NAME }}<br>
+          🦊 OrangeFox版本: ${{ inputs.MANIFEST_BRANCH }}<br>
           📅 构建日期: ${{ env.BUILD_DATE }}<br>
           <br>
           <strong>✅ 状态: 构建成功 (Build Successfully)</strong>
