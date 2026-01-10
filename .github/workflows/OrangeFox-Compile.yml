@@ -13,7 +13,7 @@ on:
   workflow_dispatch:
     inputs:
       MANIFEST_BRANCH:
-        description: 'OrangeFox Manifest Branch'
+        description: 'OrangeFox 版本'
         required: true
         default: '12.1'
         type: choice
@@ -46,6 +46,11 @@ on:
         options:
         - recovery
         - boot
+      DN:
+        description: '设备名称'
+        required: true
+        default: '如：红米12C'
+        type: string
 
 jobs:
   build:
@@ -99,7 +104,7 @@ jobs:
         source build/envsetup.sh
         export ALLOW_MISSING_DEPENDENCIES=true
         set -e
-        lunch twrp_${{ inputs.DEVICE_NAME }}-eng && mka ${{ inputs.MANIFEST_BRANCH }}image
+        lunch twrp_${{ inputs.DEVICE_NAME }}-eng && mka ${{ inputs.BUILD_TARGET }}image
 
     - name: 💿 整理镜像
       run: |
@@ -151,7 +156,8 @@ jobs:
             OrangeFox ${{ inputs.MANIFEST_BRANCH }}
           </h1>
           🚀 构建: ${{ github.run_id }}<br>
-          📱 设备: ${{ inputs.DEVICE_NAME }}<br>
+          📱 设备: ${{ inputs.DN }}<br>
+          🔢 设备代号: ${{ inputs.DEVICE_NAME }}<br>
           🦊 OrangeFox版本: ${{ inputs.MANIFEST_BRANCH }}<br>
           📅 构建日期: ${{ env.BUILD_DATE }}<br>
           <br>
