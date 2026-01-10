@@ -45,6 +45,7 @@ on:
         type: choice
         options:
         - recovery
+        - boot
 
 jobs:
   build:
@@ -98,7 +99,7 @@ jobs:
         source build/envsetup.sh
         export ALLOW_MISSING_DEPENDENCIES=true
         set -e
-        lunch twrp_${{ inputs.DEVICE_NAME }}-eng && mka recoveryimage
+        lunch twrp_${{ inputs.DEVICE_NAME }}-eng && mka ${{ inputs.MANIFEST_BRANCH }}image
 
     - name: 💿 整理镜像
       run: |
