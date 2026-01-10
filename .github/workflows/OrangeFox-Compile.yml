@@ -118,7 +118,6 @@ jobs:
 
         find "$OUT_DIR" -maxdepth 1 -name "*.img" -exec cp {} ${GITHUB_WORKSPACE}/upload_artifacts/ \;
         find "$OUT_DIR" -maxdepth 1 -name "*.zip" -exec cp {} ${GITHUB_WORKSPACE}/upload_artifacts/ \;
-        find "$OUT_DIR" -maxdepth 1 -name "*.md5" -exec cp {} ${GITHUB_WORKSPACE}/upload_artifacts/ \;
 
         if [ -z "$(ls -A ${GITHUB_WORKSPACE}/upload_artifacts/)" ]; then
            echo "❌ 未寻找到镜像，请检查BoardConfig.mk或设备树配置"
