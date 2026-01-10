@@ -144,7 +144,8 @@ jobs:
         name: OrangeFox Recovery for ${{ inputs.DEVICE_NAME }} // ${{ env.BUILD_DATE }}
         tag_name: ${{ github.run_id }}
         body: |
-          Build: ${{ github.run_id }}
-          Device: ${{ inputs.DEVICE_NAME }}
-          Manifest: ${{ inputs.MANIFEST_BRANCH }}
+          # OrangeFox ${{ inputs.MANIFEST_BRANCH }}
+          🚀构建: ${{ github.run_id }}
+          📱设备: ${{ inputs.DEVICE_NAME }}
+          🦊OrangeFox版本: ${{ inputs.MANIFEST_BRANCH }}
           
