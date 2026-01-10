@@ -1,4 +1,4 @@
-name: OrangeFox - Build
+name: OrangeFox - 构建
 
 # Credits to:
 # https://github.com/TeamWin
@@ -21,21 +21,21 @@ on:
       DEVICE_TREE:
         description: 'OrangeFox设备树'
         required: true
-        default: 'https://github.com/cd-Crypton/custom_recovery_tree_realme_nashc'
+        default: 'https://github.com/LimeBlogs/twrp_device_redmi12c'
       DEVICE_TREE_BRANCH:
         description: 'OrangeFox设备树分支'
         required: true
-        default: 'android-12.1'
+        default: 'main'
       DEVICE_PATH:
         description: '指定设备路径'
         required: true
-        default: 'device/realme/nashc'
+        default: 'device/xiaomi/earth'
       DEVICE_NAME:
         description: '指定设备代号'
         required: true
-        default: 'nashc'
+        default: 'earth'
       BUILD_TARGET:
-        description: '默认构建REC'
+        description: '构建目标'
         required: true
         default: 'recovery'
         type: choice
@@ -44,7 +44,7 @@ on:
 
 jobs:
   build:
-    name: 🏠 构建 OFR by ${{ github.actor }}
+    name: 🏠 由 ${{ github.actor }} 构建REC
     runs-on: ubuntu-22.04
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -80,7 +80,7 @@ jobs:
         cd sync
         ./orangefox_sync.sh --branch ${{ inputs.MANIFEST_BRANCH }} --path ${GITHUB_WORKSPACE}/OrangeFox/fox_${{ inputs.MANIFEST_BRANCH }}
 
-    - name: 🖊 克隆设备树
+    - name: 🌳 克隆设备树
       run: |
         cd ${GITHUB_WORKSPACE}/OrangeFox/fox_${{ inputs.MANIFEST_BRANCH }}
         git clone ${{ inputs.DEVICE_TREE }} -b ${{ inputs.DEVICE_TREE_BRANCH }} ./${{ inputs.DEVICE_PATH }}
