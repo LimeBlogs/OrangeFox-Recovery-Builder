@@ -108,17 +108,32 @@ jobs:
         fi
         echo "DEVICE_TREE_URL=${DEVICE_TREE_URL}" >> $GITHUB_ENV
 
+    - name: 📦 整理刷机包 (防止传错文件)
+      run: |
+        # 1. 创建一个临时的干净文件夹
+        mkdir -p upload_artifacts
+        
+        echo "正在搜寻 recovery.img ..."
+        # 在 out 目录下查找 recovery.img，忽略中间产物，并复制到上传目录
+        find . -path "*/out/target/product/*/*.img" -name "recovery.img" -exec cp {} upload_artifacts/ \;
+        
+        echo "正在搜寻 OrangeFox zip 包 ..."
+        # 查找以 .zip 结尾且名字包含 OrangeFox 的文件，排除 common 目录的干扰
+        find . -type f -name "*OrangeFox*.zip" ! -path "*/common/*" -exec cp {} upload_artifacts/ \;
+        
+        echo "=== 准备上传的文件清单 ==="
+        ls -R upload_artifacts/
+
     - name: Upload to Release
       uses: softprops/action-gh-release@v2
+      if: success()
       with:
-        files: |
-          OrangeFox/fox_${{ inputs.MANIFEST_BRANCH }}/out/target/product/${{ inputs.DEVICE_NAME }}/*.img
-          OrangeFox/fox_${{ inputs.MANIFEST_BRANCH }}/out/target/product/${{ inputs.DEVICE_NAME }}/*.zip
+        # 只上传在这个文件夹里的东西，绝对干净
+        files: upload_artifacts/*
         name: OrangeFox Recovery for ${{ inputs.DEVICE_NAME }} // ${{ env.BUILD_DATE }}
         tag_name: ${{ github.run_id }}
         body: |
-          ## OrangeFox Recovery Build - Unofficial
-          Build: fox_${{ inputs.MANIFEST_BRANCH }}
-          Device: [Device Tree/Branch](${{ env.DEVICE_TREE_URL }}/tree/${{ inputs.DEVICE_TREE_BRANCH }})
-          Commit: Most recent [commit](${{ env.DEVICE_TREE_URL }}/commit/${{ env.COMMIT_ID }}) during building.
+          Build: ${{ github.run_id }}
+          Device: ${{ inputs.DEVICE_NAME }}
+          Manifest: ${{ inputs.MANIFEST_BRANCH }}
           
