@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="https://orangefox.download/fox.svg" height="80" style="vertical-align:bottom"/> 
+  <img src="https://orangefox.download/fox.svg" height="60" style="vertical-align:bottom"/> 
   OrangeFox Recovery Builder
 </h1>
 
