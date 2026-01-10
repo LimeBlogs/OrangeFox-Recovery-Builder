@@ -102,22 +102,29 @@ jobs:
 
     - name: 💿 整理镜像
       run: |
-        # 1.创建目录
         mkdir -p ${GITHUB_WORKSPACE}/upload_artifacts
-        # 2. 定义输出目录
-        OUT_DIR="out/target/product/${{ inputs.DEVICE_NAME }}"
-        
-        # 3. 查找所有 img/zip/md5文件
+
+        FOX_DIR="${GITHUB_WORKSPACE}/OrangeFox/fox_${{ inputs.MANIFEST_BRANCH }}"
+        OUT_DIR="${FOX_DIR}/out/target/product/${{ inputs.DEVICE_NAME }}"
+
+        echo "🔍 正在从以下绝对路径搜寻文件："
+        echo "$OUT_DIR"
+
+        if [ ! -d "$OUT_DIR" ]; then
+            echo "❌ 严重错误：输出目录不存在！"
+            echo "可能是 inputs.DEVICE_NAME (${{ inputs.DEVICE_NAME }}) 不对，或者 Manifest 分支不对。"
+            exit 1
+        fi
+
         find "$OUT_DIR" -maxdepth 1 -name "*.img" -exec cp {} ${GITHUB_WORKSPACE}/upload_artifacts/ \;
-        find "$OUT_DIR" -maxdepth 1 -name "*.md5" -exec cp {} ${GITHUB_WORKSPACE}/upload_artifacts/ \;
         find "$OUT_DIR" -maxdepth 1 -name "*.zip" -exec cp {} ${GITHUB_WORKSPACE}/upload_artifacts/ \;
-        
-        # 4. 最终检查：如果上传目录是空的，才报错
+        find "$OUT_DIR" -maxdepth 1 -name "*.md5" -exec cp {} ${GITHUB_WORKSPACE}/upload_artifacts/ \;
+
         if [ -z "$(ls -A ${GITHUB_WORKSPACE}/upload_artifacts/)" ]; then
-           echo "❌ 依然没找到文件！请检查日志。"
+           echo "❌ 未寻找到镜像，请检查BoardConfig.mk或设备树配置"
            exit 1
         else
-           echo "✅ 成功抓取以下文件："
+           echo "✅ 找到文件"
            ls -R ${GITHUB_WORKSPACE}/upload_artifacts/
         fi
 
