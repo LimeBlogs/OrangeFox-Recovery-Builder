@@ -46,7 +46,8 @@ OF_ALLOW_DISABLE_NAVBAR := 0
 # 3. 核心功能
 # ==========================================
 OF_USE_MAGISKBOOT := 1
-OF_USE_MAGISKBOOT_FOR_ALL_PATCHES := 1
+OF_USE_MAGISKBOOT_FOR_ALL_PATCHES := 0
+OF_NO_RELOAD_MAGISKBOOT := 1
 OF_NO_TREBLE_COMPATIBILITY_CHECK := 1
 OF_NO_MIUI_PATCH_WARNING := 1
 
@@ -63,7 +64,7 @@ OF_DONT_PATCH_ENCRYPTED_DEVICE := 1
 OF_KEEP_DM_VERITY := 1
 
 # 强制使用 magiskboot 可以在刷入时自动修补 Boot，避免掉 Root
-OF_USE_MAGISKBOOT_COMPRESSED_WEBP := 1
+OF_USE_MAGISKBOOT_COMPRESSED_WEBP := 0
 
 # ==========================================
 # 5. 其他杂项
