@@ -8,10 +8,11 @@
 </h3>
 
 ## 🚢快速开始
-设备树文件和`OrangeFoxConfig.mk`是必需品，一切准备就绪后，你可以开始构建OF。
+设备树文件和`OrangeFoxConfig.mk`是必需品，一切准备就绪后，你可以开始构建OF。完毕后所有的产物都会在Releases中
 
 ### 设备树与创建OrangeFoxConfig.mk
 你首先需要准备好设备的设备树，并且将其Fork到你的用户下，接着在项目目录下新建`OrangeFoxConfig.mk`，按照注释填写
+
 ```
 # ==========================================
 # 1. 基础信息 (这块随便填)
@@ -72,21 +73,24 @@ OF_ENABLE_LPTOOLS := 1
 # 默认备份列表
 OF_QUICK_BACKUP_LIST := /boot;/data;
 ```
+
 填写完毕只需要Push即可，准备好推送过后的仓库链接
 
 ### 🚀开始构建
 在顶部`Action` 标签 > `All workflows` > `OrangeFox - 构建 ` > `Run workflow`
 
 按照要求填写信息
-`OrangeFox 版本` - 保持默认12.1即可，14.1未经过实测，可能会存在许多问题<br>
-`OrangeFox设备树` - 拷贝设备树的仓库链接<br>
-`OrangeFox设备树分支` - 设备树的分支，一般是main或者master<br>
-`指定设备路径` - 一般为`device/${品牌}/${设备代号}`<br>
-`指定设备代号` - 设备代号，通过搜索引擎或者`fastboot getvar product`查询<br>
-`构建目标` - 构建的镜像，`boot`/`recovery`，前者适用于无独立REC分区的设备，后者反之，对于无独立Rec的设备可以构建Boot.img后使用`Recovery Ramdisk`固化，接着再刷回原厂Boot（需自备）<br>
-`设备名称` - 设备名称，随意填写，主要是存在发行版的版本信息内（如：iPhone6s Plus/Redmi K20 Pro等），无硬性要求<br>
+`OrangeFox 版本` - 保持默认12.1即可，14.1未经过实测，可能会存在许多问题<br><br>
+`OrangeFox设备树` - 拷贝设备树的仓库链接<br><br>
+`OrangeFox设备树分支` - 设备树的分支，一般是main或者master<br><br>
+`指定设备路径` - 一般为`device/${品牌}/${设备代号}`<br><br>
+`指定设备代号` - 设备代号，通过搜索引擎或者`fastboot getvar product`查询<br><br>
+`构建目标` - 构建的镜像，`boot`/`recovery`，前者适用于无独立REC分区的设备，后者反之<br><br>
+*对于无独立Rec的设备强行构建Rec后只会生成OrangeFox 的卡刷包 (.zip)，这需要你自备其他Rec并进行固化，如若无第三方Rec，可以构建Boot后于OrangeFox内进行固化操作*
+<br><br>`设备名称` - 设备名称，随意填写，主要是存在发行版的版本信息内（如：iPhone6s Plus/Redmi K20 Pro等），无硬性要求<br><br>
 
-点击底部绿色`Run workflow`开始构建，整个过程时间较长，耐心等待
+点击底部绿色`Run workflow`开始构建，整个过程时间较长，耐心等待<br><br>
+完毕后你可以在仓库的`Releases`中查看并下载镜像
 
 ### 📱刷入镜像
 使用fastboot(无独立REC分区设备)
@@ -102,3 +106,7 @@ fastboot falsh boot boot.img
 ```
 fastboot falsh boot boot.img
 ```
+
+## 🌸致谢
+该项目基于[**OrangeFox-Action-Builder**](OrangeFox-Action-Builder)修改并进行优化，对原有项目添加了中文支持和部分工作流代码优化。<br>
+部分代码完善由Gemini 3调整并优化。
