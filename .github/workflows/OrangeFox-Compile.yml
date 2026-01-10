@@ -99,6 +99,14 @@ jobs:
         export ALLOW_MISSING_DEPENDENCIES=true
         set -e
         lunch twrp_${{ inputs.DEVICE_NAME }}-eng && mka recoveryimage
+        
+        if [ ! -f "out/target/product/${{ inputs.DEVICE_NAME }}/recovery.img" ]; then
+            echo "❌ 严重错误：未检测到REC镜像"
+            echo "请检查 BoardConfig.mk或设备树是否配置正确。"
+            exit 1
+        else
+            echo "✅ 成功：REC镜像构建完毕"
+        fi
 
     - name: 🧶 设置发行版
       run: |
