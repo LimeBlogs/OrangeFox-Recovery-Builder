@@ -8,7 +8,7 @@
 </h3>
 
 ## 🚢快速开始
-首先Fork本仓库，另外，设备树文件和`OrangeFoxConfig.mk`是必需品，一切准备就绪后，你可以开始构建OF。完毕后所有的产物都会在Releases中
+首先Fork本仓库，你还需要设备树文件和`OrangeFoxConfig.mk`，一切准备就绪后，你可以开始构建OF。完毕后所有的产物都会在Releases中，具体步骤如下
 
 ### 📁设备树与OrangeFoxConfig.mk
 你首先需要准备好设备的设备树，并且将其Fork到你的用户下，接着在项目目录下新建`OrangeFoxConfig.mk`，按照注释填写
