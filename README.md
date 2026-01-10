@@ -42,7 +42,7 @@ OF_CLOCK_POS := 1
 OF_ALLOW_DISABLE_NAVBAR := 0
 
 # ==========================================
-# 3. 核心功能 (默认全开，不要动)
+# 3. 核心功能
 # ==========================================
 OF_USE_MAGISKBOOT := 1
 OF_USE_MAGISKBOOT_FOR_ALL_PATCHES := 1
@@ -78,13 +78,27 @@ OF_QUICK_BACKUP_LIST := /boot;/data;
 在顶部`Action` 标签 > `All workflows` > `OrangeFox - 构建 ` > `Run workflow`
 
 按照要求填写信息
-`OrangeFox 版本` - 保持默认12.1即可，14.1未经过实测，可能会存在许多问题
-`OrangeFox设备树` - 拷贝设备树的仓库链接
-`OrangeFox设备树分支` - 设备树的分支，一般是main或者master
-`指定设备路径` - 一般为`device/${品牌}/${设备代号}`
-`指定设备代号` - 设备代号，通过搜索引擎或者`fastboot getvar product`查询
-`构建目标` - 构建的镜像，`boot`/`recovery`，前者适用于无独立REC分区的设备，后者反之，对于无独立Rec的设备可以构建Boot.img后使用`Recovery Ramdisk`固化，接着再刷回原厂Boot（需自备）
-`设备名称` - 设备名称，随意填写，主要是存在发行版的版本信息内（如：iPhone6s Plus/Redmi K20 Pro等），无硬性要求
+`OrangeFox 版本` - 保持默认12.1即可，14.1未经过实测，可能会存在许多问题<br>
+`OrangeFox设备树` - 拷贝设备树的仓库链接<br>
+`OrangeFox设备树分支` - 设备树的分支，一般是main或者master<br>
+`指定设备路径` - 一般为`device/${品牌}/${设备代号}`<br>
+`指定设备代号` - 设备代号，通过搜索引擎或者`fastboot getvar product`查询<br>
+`构建目标` - 构建的镜像，`boot`/`recovery`，前者适用于无独立REC分区的设备，后者反之，对于无独立Rec的设备可以构建Boot.img后使用`Recovery Ramdisk`固化，接着再刷回原厂Boot（需自备）<br>
+`设备名称` - 设备名称，随意填写，主要是存在发行版的版本信息内（如：iPhone6s Plus/Redmi K20 Pro等），无硬性要求<br>
 
 点击底部绿色`Run workflow`开始构建，整个过程时间较长，耐心等待
 
+### 📱刷入镜像
+使用fastboot(无独立REC分区设备)
+
+```
+fastboot falsh boot boot.img
+```
+对于Rec固化你需要自备原厂Boot，即先刷入一遍原厂再使用OF固化即可
+
+<br>
+
+使用fastboot(有独立REC分区设备)
+```
+fastboot falsh boot boot.img
+```
