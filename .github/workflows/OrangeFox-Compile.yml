@@ -107,6 +107,12 @@ jobs:
           DEVICE_TREE_URL="${DEVICE_TREE_URL%.git}"
         fi
         echo "DEVICE_TREE_URL=${DEVICE_TREE_URL}" >> $GITHUB_ENV
+  
+    - name: 🕵️ 全盘尸检 (Debug)
+      run: |
+        echo "=== 正在列出工作区所有文件 (排除隐藏文件) ==="
+        # 查找所有文件，不限制层级，看看到底生成了什么
+        find . -type f -not -path '*/.*'
 
     - name: 📦 整理刷机包 (防止传错文件)
       run: |
