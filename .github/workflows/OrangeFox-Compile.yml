@@ -141,14 +141,14 @@ jobs:
       with:
         # 只上传在这个文件夹里的东西，绝对干净
         files: upload_artifacts/*
-        name: OrangeFox Recovery for ${{ inputs.DEVICE_NAME }} // ${{ env.BUILD_DATE }}
+        name: ${{ inputs.DEVICE_NAME }} // ${{ env.BUILD_DATE }}
         tag_name: ${{ github.run_id }}
         body: |
           <h1 align="center">
             <img src="https://orangefox.download/fox.svg" height="40" style="vertical-align:bottom"/> 
-            版本更新说明
+            OrangeFox ${{ inputs.MANIFEST_BRANCH }}
          </h1>
-          🚀构建: ${{ github.run_id }}
-          📱设备: ${{ inputs.DEVICE_NAME }}
-          🦊OrangeFox版本: ${{ inputs.MANIFEST_BRANCH }}
+          🚀构建: ${{ github.run_id }}<br>
+          📱设备: ${{ inputs.DEVICE_NAME }}<br>
+          🦊OrangeFox版本: ${{ inputs.MANIFEST_BRANCH }}<br>
           
