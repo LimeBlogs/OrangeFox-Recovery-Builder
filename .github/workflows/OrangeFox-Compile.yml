@@ -5,6 +5,7 @@ name: OrangeFox - Build
 # https://gitlab.com/OrangeFox
 # https://github.com/azwhikaru for Recovery Builder Template
 # And all Contributors in every repositories I used
+# Lime优化与编辑修复
 
 on:
   workflow_dispatch:
@@ -18,59 +19,57 @@ on:
         - 12.1
         - 11.0
       DEVICE_TREE:
-        description: 'OrangeFox Device Tree'
+        description: 'OrangeFox设备树'
         required: true
         default: 'https://github.com/cd-Crypton/custom_recovery_tree_realme_nashc'
       DEVICE_TREE_BRANCH:
-        description: 'OrangeFox Device Tree Branch'
+        description: 'OrangeFox设备树分支'
         required: true
         default: 'android-12.1'
       DEVICE_PATH:
-        description: 'Specify your Device Path'
+        description: '指定设备路径'
         required: true
         default: 'device/realme/nashc'
       DEVICE_NAME:
-        description: 'Specify your Device Codename'
+        description: '指定设备代号'
         required: true
         default: 'nashc'
       BUILD_TARGET:
-        description: 'Specify your Build Target'
+        description: '默认构建REC'
         required: true
         default: 'recovery'
         type: choice
         options:
-        - boot
         - recovery
-        - vendorboot
 
 jobs:
   build:
-    name: Build OFR by ${{ github.actor }}
+    name: 🏠 构建 OFR by ${{ github.actor }}
     runs-on: ubuntu-22.04
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     permissions:
       contents: write
     steps:
-    - name: Checkout
+    - name: ✅ 检查
       uses: actions/checkout@v4
               
-    - name: Clean-up
+    - name: 🧹 清理
       uses: rokibhasansagar/slimhub_actions@main
 
-    - name: Swap Space
+    - name: 🚢 Swap空间
       uses: pierotofy/set-swap-space@master
       with:
         swap-size-gb: 24
       
-    - name: Build Environment
+    - name: 🤖 构建环境
       run: |
         sudo apt install aria2 -y
         git clone https://gitlab.com/OrangeFox/misc/scripts.git -b master
         cd scripts
         sudo bash setup/android_build_env.sh
       
-    - name: Set-up Manifest
+    - name: 🏙️ 初始化清单
       if: inputs.MANIFEST_BRANCH == '11.0' || inputs.MANIFEST_BRANCH == '12.1'
       run: |
         mkdir -p ${GITHUB_WORKSPACE}/OrangeFox
@@ -81,23 +80,23 @@ jobs:
         cd sync
         ./orangefox_sync.sh --branch ${{ inputs.MANIFEST_BRANCH }} --path ${GITHUB_WORKSPACE}/OrangeFox/fox_${{ inputs.MANIFEST_BRANCH }}
 
-    - name: Clone Device Tree
+    - name: 🖊 克隆设备树
       run: |
         cd ${GITHUB_WORKSPACE}/OrangeFox/fox_${{ inputs.MANIFEST_BRANCH }}
         git clone ${{ inputs.DEVICE_TREE }} -b ${{ inputs.DEVICE_TREE_BRANCH }} ./${{ inputs.DEVICE_PATH }}
         cd ${{ inputs.DEVICE_PATH }}
         echo "COMMIT_ID=$(git rev-parse HEAD)" >> $GITHUB_ENV
 
-    - name: Building OrangeFox
+    - name: 🦊 构建OrangeFox
       run: |
         cd ${GITHUB_WORKSPACE}/OrangeFox/fox_${{ inputs.MANIFEST_BRANCH }}
         set +e
         source build/envsetup.sh
         export ALLOW_MISSING_DEPENDENCIES=true
         set -e
-        lunch twrp_${{ inputs.DEVICE_NAME }}-eng && make clean && mka adbd ${{ inputs.BUILD_TARGET }}image
+        lunch twrp_${{ inputs.DEVICE_NAME }}-eng && make clean && mka recoveryimage
 
-    - name: Set Release Properties
+    - name: 🧶 设置发行版
       run: |
         echo "BUILD_DATE=$(TZ=Asia/Manila date +%Y%m%d)" >> $GITHUB_ENV
         cd ${GITHUB_WORKSPACE}/OrangeFox/fox_${{ inputs.MANIFEST_BRANCH }}
@@ -107,14 +106,8 @@ jobs:
           DEVICE_TREE_URL="${DEVICE_TREE_URL%.git}"
         fi
         echo "DEVICE_TREE_URL=${DEVICE_TREE_URL}" >> $GITHUB_ENV
-  
-    - name: 🕵️ 全盘尸检 (Debug)
-      run: |
-        echo "=== 正在列出工作区所有文件 (排除隐藏文件) ==="
-        # 查找所有文件，不限制层级，看看到底生成了什么
-        find . -type f -not -path '*/.*'
 
-    - name: 📦 整理刷机包 (防止传错文件)
+    - name: 📦 整理刷机包
       run: |
         # 1. 创建一个临时的干净文件夹
         mkdir -p upload_artifacts
@@ -130,7 +123,7 @@ jobs:
         echo "=== 准备上传的文件清单 ==="
         ls -R upload_artifacts/
 
-    - name: Upload to Release
+    - name: 🎥 上传至发行版
       uses: softprops/action-gh-release@v2
       if: success()
       with:
