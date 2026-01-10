@@ -127,17 +127,6 @@ jobs:
            ls -R ${GITHUB_WORKSPACE}/upload_artifacts/
         fi
 
-        # 改名方便识别 (如果有 recovery.img)
-        if [ -f "recovery.img" ]; then
-            mv recovery.img OrangeFox-Unpacked-${{ inputs.DEVICE_NAME }}.img
-        fi
-
-        # 清理空文件
-        find . -type f -empty -delete
-        
-        echo "✅ 最终上传列表："
-        ls -R
-
     - name: 🧶 设置发行版参数
       run: |
         echo "BUILD_DATE=$(TZ=Asia/Shanghai date +%Y%m%d)" >> $GITHUB_ENV
