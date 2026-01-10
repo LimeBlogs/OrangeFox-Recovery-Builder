@@ -61,6 +61,13 @@ jobs:
     permissions:
       contents: write
     steps:
+    - name: 🧱 构建配置
+      run: |
+        echo "构建配置"
+        echo "设备代号: ${{ inputs.DEVICE_NAME }}"
+        echo "设备名称: ${{ inputs.DN }}"
+        echo "指定设备路径: ${{ inputs.DEVICE_PATH }}"
+        echo "构建: ${{ inputs.BUILD_TARGET }}"
     - name: ✅ 检查
       uses: actions/checkout@v4
               
