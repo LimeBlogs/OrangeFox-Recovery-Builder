@@ -98,7 +98,7 @@ jobs:
         source build/envsetup.sh
         export ALLOW_MISSING_DEPENDENCIES=true
         set -e
-        lunch twrp_${{ inputs.DEVICE_NAME }}-eng && make clean && mka recoveryimage
+        lunch twrp_${{ inputs.DEVICE_NAME }}-eng && mka recoveryimage
 
     - name: 🧶 设置发行版
       run: |
