@@ -103,29 +103,46 @@ jobs:
     - name: 💿 整理镜像
       run: |
         mkdir -p ${GITHUB_WORKSPACE}/upload_artifacts
-
         FOX_DIR="${GITHUB_WORKSPACE}/OrangeFox/fox_${{ inputs.MANIFEST_BRANCH }}"
         OUT_DIR="${FOX_DIR}/out/target/product/${{ inputs.DEVICE_NAME }}"
-
-        echo "🔍 正在从以下绝对路径搜寻文件："
-        echo "$OUT_DIR"
-
-        if [ ! -d "$OUT_DIR" ]; then
-            echo "❌ 严重错误：输出目录不存在！"
-            echo "可能是 inputs.DEVICE_NAME (${{ inputs.DEVICE_NAME }}) 不对，或者 Manifest 分支不对。"
-            exit 1
-        fi
-
-        find "$OUT_DIR" -maxdepth 1 -name "*.img" -exec cp {} ${GITHUB_WORKSPACE}/upload_artifacts/ \;
+        
+        echo "🔍 1. 搬运 Zip 包"
         find "$OUT_DIR" -maxdepth 1 -name "*.zip" -exec cp {} ${GITHUB_WORKSPACE}/upload_artifacts/ \;
+        
+        cd ${GITHUB_WORKSPACE}/upload_artifacts
+        
+        # === 💥 核心修改：打印清单 + 全量解压 ===
+        if ls *.zip 1> /dev/null 2>&1; then
+            echo "📋 Zip 包内部文件清单 (Debug):"
+            unzip -l *.zip
+            
+            echo "🔓 正在解压所有文件..."
+            # 解压到 temp 目录
+            unzip -o *.zip -d temp_extracted
+            
+            echo "🕵️‍♂️ 正在地毯式搜索 .img 文件..."
+            # 不管它藏在 sdcard/Fox 还是哪里，只要是 .img，全部移动到根目录
+            find temp_extracted -type f -name "*.img" -exec mv {} . \;
+            
+            # 如果没找到 img，看看有没有 payload.bin (有些包是这种格式)
+            find temp_extracted -type f -name "payload.bin" -exec mv {} . \;
 
-        if [ -z "$(ls -A ${GITHUB_WORKSPACE}/upload_artifacts/)" ]; then
-           echo "❌ 未寻找到镜像，请检查BoardConfig.mk或设备树配置"
-           exit 1
+            echo "🧹 清理残骸..."
+            rm -rf temp_extracted
         else
-           echo "✅ 找到文件"
-           ls -R ${GITHUB_WORKSPACE}/upload_artifacts/
+            echo "❌ 连 Zip 包都没找到？"
         fi
+
+        # 改名方便识别 (如果有 recovery.img)
+        if [ -f "recovery.img" ]; then
+            mv recovery.img OrangeFox-Unpacked-${{ inputs.DEVICE_NAME }}.img
+        fi
+
+        # 清理空文件
+        find . -type f -empty -delete
+        
+        echo "✅ 最终上传列表："
+        ls -R
 
     - name: 🧶 设置发行版参数
       run: |
