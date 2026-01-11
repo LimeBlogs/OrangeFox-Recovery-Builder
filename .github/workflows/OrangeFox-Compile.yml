@@ -78,7 +78,7 @@ jobs:
     - name: 🚢 Swap空间
       uses: pierotofy/set-swap-space@master
       with:
-        swap-size-gb: 8
+        swap-size-gb: 24
       
     - name: 🤖 构建环境
       run: |
