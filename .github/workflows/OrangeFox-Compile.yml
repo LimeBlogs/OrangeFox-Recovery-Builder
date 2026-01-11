@@ -66,6 +66,7 @@ jobs:
         echo "构建配置"
         echo "设备代号: ${{ inputs.DEVICE_NAME }}"
         echo "设备名称: ${{ inputs.DN }}"
+        echo "OrangeFox版本: ${{ inputs.MANIFEST_BRANCH }}"
         echo "指定设备路径: ${{ inputs.DEVICE_PATH }}"
         echo "构建: ${{ inputs.BUILD_TARGET }}"
     - name: ✅ 检查
