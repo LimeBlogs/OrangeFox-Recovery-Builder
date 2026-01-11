@@ -74,6 +74,13 @@ OF_ENABLE_LPTOOLS := 1
 OF_QUICK_BACKUP_LIST := /boot;/data;
 ```
 
+接着，在`BoardConfig.mk`尾部引用
+
+```
+# 添加这行代码来加载 OrangeFoxConfig.mk
+-include $(DEVICE_PATH)/OrangeFoxConfig.mk
+```
+
 填写完毕只需要Push即可，准备好推送过后的仓库链接
 
 ### 🚀开始构建
